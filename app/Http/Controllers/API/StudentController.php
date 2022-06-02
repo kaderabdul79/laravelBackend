@@ -11,6 +11,22 @@ class StudentController extends Controller
 {
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'name'=>'required|max:191',
+            'course'=>'required|max:191',
+            'email'=>'required|email|max:191',
+            'phone'=>'required|max:10|min:10',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'status'=> 422,
+                'validate_err'=> $validator->errors(),
+            ]);
+        }
+        else
+        {
             $student = new Student;
             $student->name = $request->input('name');
             $student->course = $request->input('course');
@@ -22,6 +38,7 @@ class StudentController extends Controller
                 'status'=> 200,
                 'message'=>'Student Added Successfully',
             ]);
+        }
 
     }
 }
