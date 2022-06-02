@@ -9,13 +9,24 @@ use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
+    // retrive all data from db
+    public function index()
+    {
+        $students = Student::all();
+        return response()->json([
+            'status'=> 200,
+            'students'=>$students,
+        ]);
+    }
+    
+    // store data to db if data validate
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
             'name'=>'required|max:191',
             'course'=>'required|max:191',
             'email'=>'required|email|max:191',
-            'phone'=>'required|max:10|min:10',
+            'phone'=>'required|max:11|min:11',
         ]);
 
         if($validator->fails())
@@ -42,15 +53,7 @@ class StudentController extends Controller
 
     }
 
-    public function index()
-    {
-        $students = Student::all();
-        return response()->json([
-            'status'=> 200,
-            'students'=>$students,
-        ]);
-    }
-
+    // edit student info according to the corresponded ID
     public function edit($id)
     {
         $student = Student::find($id);
@@ -71,13 +74,14 @@ class StudentController extends Controller
 
     }
 
+    // // update student info according to the corresponded ID
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
             'name'=>'required|max:191',
             'course'=>'required|max:191',
             'email'=>'required|email|max:191',
-            'phone'=>'required|max:10|min:10',
+            'phone'=>'required|max:11|min:11',
         ]);
 
         if($validator->fails())
@@ -114,7 +118,7 @@ class StudentController extends Controller
         }
     }
 
-
+    // // delete student info according to the corresponded ID
     public function destroy($id)
     {
         $student = Student::find($id);
